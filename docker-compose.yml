@@ -1,0 +1,56 @@
+version: "2"
+services:
+  config-service:
+    image: openjdk:8
+    working_dir: /app
+    volumes:
+      - ./config-service/build/libs:/app
+      - ./config:/app/config
+    command: java -jar /app/config-service.jar
+    environment:
+      - CONFIG_PATH=/app/config/
+    ports:
+      - "8888:8888"
+
+  registration-service:
+    image: openjdk:8
+    working_dir: /app
+    volumes:
+      - ./registration-service/build/libs:/app
+    command: java -jar /app/registration-service.jar
+    environment:
+     - CONFIG_SERVICE=http://config-service:8888
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
+
+  proxy-service:
+    image: openjdk:8
+    working_dir: /app
+    volumes:
+      - ./proxy-service/build/libs:/app
+    command: java -jar /app/proxy-service.jar
+    environment:
+      - CONFIG_SERVICE=http://config-service:8888
+      - REGISTRATION_SERVICE=http://registration-service:8761
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+      - registration-service
+
+  users-service:
+    image: openjdk:8
+    working_dir: /app
+    volumes:
+      - ./users-service/build/libs:/app
+    command: java -jar /app/users-service.jar
+    environment:
+      - CONFIG_SERVICE=http://config-service:8888
+      - REGISTRATION_SERVICE=http://registration-service:8761
+    ports:
+      - "8081:8081"
+    depends_on:
+      - config-service
+      - registration-service

@@ -5,6 +5,6 @@ spring:
     config:
       server:
         git:
-          uri: ${DEV}/Perso/cloud-experiment/config # Update using your own path
+          uri: ${CONFIG_PATH} #${DEV}/Perso/cloud-experiment/config
 server:
-  port: 8888
+  port: ${SERVER_PORT:8888}

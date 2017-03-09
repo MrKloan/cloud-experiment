@@ -41,4 +41,9 @@ subprojects {
 
         testCompile 'org.springframework.boot:spring-boot-starter-test'
     }
+
+    jar {
+        // Omit version number in generated JAR name for docker-compose.yml
+        archiveName project.name + '.jar'
+    }
 }
