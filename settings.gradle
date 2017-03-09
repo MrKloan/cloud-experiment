@@ -1,12 +1,6 @@
 rootProject.name = 'cloud-experiment'
 
-// Core Infrastructure
-include 'registration-server'
-include 'hystrix-dashboard'
-
-// Services
-include 'users-service'
-
-// Client Apps
-include 'web-client'
-
+include 'config-service'
+include 'registration-service'
+include 'proxy-service'
+include 'user-service'
